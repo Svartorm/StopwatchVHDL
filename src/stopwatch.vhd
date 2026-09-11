@@ -1,8 +1,64 @@
 library IEEE;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
 
 entity stopwatch is
     port (
-        
+        MAX10_CLK1_50: in std_logic;
+        HEX0: out std_logic_vector(6 downto 0)
     );
 end entity stopwatch;
+
+architecture rtl of stopwatch is
+    
+    constant CLK_FREQ    : integer := 50_000_000;
+ 
+    signal clk_div_count : integer range 0 to CLK_FREQ - 1 := 0;
+    signal one_sec_tick  : std_logic := '0';
+    signal digit         : unsigned(3 downto 0) := (others => '0');
+
+begin
+
+	 -- 1s timer
+    process (MAX10_CLK1_50)
+    begin
+        if rising_edge(MAX10_CLK1_50) then
+            if clk_div_count = CLK_FREQ - 1 then
+                clk_div_count <= 0;
+                one_sec_tick  <= '1';
+            else
+                clk_div_count <= clk_div_count + 1;
+                one_sec_tick  <= '0';
+            end if;
+        end if;
+    end process;
+
+	 -- Counter
+    process (MAX10_CLK1_50)
+    begin
+        if rising_edge(MAX10_CLK1_50) then
+            if one_sec_tick = '1' then
+                if digit = 9 then
+                    digit <= (others => '0');
+                else
+                    digit <= digit + 1;
+                end if;
+            end if;
+        end if;
+    end process;
+
+    with digit select
+        HEX0 <= "1000000" when "0000", -- 0
+                "1111001" when "0001", -- 1
+                "0100100" when "0010", -- 2
+                "0110000" when "0011", -- 3
+                "0011001" when "0100", -- 4
+                "0010010" when "0101", -- 5
+                "0000010" when "0110", -- 6
+                "1111000" when "0111", -- 7
+                "0000000" when "1000", -- 8
+                "0010000" when "1001", -- 9
+                "1111111" when others; -- blank / undefined
+    
+end architecture rtl;
