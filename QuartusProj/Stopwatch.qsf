@@ -233,3 +233,4 @@ set_location_assignment PIN_N3 -to VGA_HS
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to VGA_HS
 set_location_assignment PIN_N1 -to VGA_VS
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to VGA_VS
+set_global_assignment -name QIP_FILE superpll.qip
