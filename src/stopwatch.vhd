@@ -46,7 +46,8 @@ architecture RTL of stopwatch is
 
     signal VGA_State : std_logic_vector(2 downto 0);
     signal Bar_State : std_logic_vector(1 downto 0);
-
+    -- Chenillard
+    signal Chaser : std_logic_vector(7 downto 0);
 
     -- Tick 100 Hz
     signal Tick100 : std_logic;
@@ -143,6 +144,15 @@ begin
             Seconds      => Seconds,
             Centiseconds => Centiseconds
         );
+    -- Chenillard
+    CHASER_INST : entity work.led_chaser
+        port map(
+            Clk       => MAX10_CLK1_50,
+            nReset    => KEY(0),
+            Running   => Running,
+            LoadTimer => LoadTimer,
+            Chaser    => Chaser
+        );
 
 
     -- Separation minutes
@@ -227,13 +237,7 @@ begin
     -- Etat RUN
     LEDR(1) <= Running;
 
-    LEDR(2) <= '0';
-    LEDR(3) <= '0';
-    LEDR(4) <= '0';
-    LEDR(5) <= '0';
-    LEDR(6) <= '0';
-    LEDR(7) <= '0';
-    LEDR(8) <= '0';
-    LEDR(9) <= '0';
+    -- Chenillard
+    LEDR(9 downto 2) <= Chaser;
 
 end architecture RTL;
