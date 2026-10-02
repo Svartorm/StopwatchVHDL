@@ -172,7 +172,7 @@ begin
     -- PLL 50 MHz -> 25 MHz
     -- IMPORTANT : le nom "pll_25" doit correspondre au nom de ton IP PLL
     -- generee dans Quartus.
-    PLL_INST : entity work.superpll
+    PLL_INST : entity work.pll_25
         port map(
             inclk0 => MAX10_CLK1_50,
             c0     => clk_25

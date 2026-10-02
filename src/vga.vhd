@@ -26,8 +26,8 @@ end entity vga_ctrl;
 architecture RTL of vga_ctrl is
 
     -- Compteurs internes VGA
-    signal h_count : unsigned(9 downto 0) := (others => '0');
-    signal v_count : unsigned(9 downto 0) := (others => '0');
+    signal h_count : unsigned(9 downto 0) := (others => '0'); // misea0
+    signal v_count : unsigned(9 downto 0) := (others => '0'); // misea0
 
     -- Largeur de la barre
     signal bar_width        : unsigned(9 downto 0);
@@ -65,15 +65,14 @@ begin
 
         if nReset = '0' then
 
-            h_count <= (others => '0');
-            v_count <= (others => '0');
+            h_count <= (others => '0'); // misea0
+            v_count <= (others => '0'); // misea0
 
         elsif rising_edge(clk_25) then
 
             if h_count = to_unsigned(799, 10) then
 
                 h_count <= (others => '0');
-
                 if v_count = to_unsigned(524, 10) then
                     v_count <= (others => '0');
                 else
@@ -85,9 +84,7 @@ begin
                 h_count <= h_count + 1;
 
             end if;
-
         end if;
-
     end process;
 
 
@@ -99,7 +96,6 @@ begin
         R <= "0000";
         G <= "0000";
         B <= "0000";
-
 
         -- Zone visible 640x480
         if (h_count < to_unsigned(640, 10)) and
@@ -113,7 +109,6 @@ begin
                     R <= "0000";
                     G <= "0000";
                     B <= "1111";
-
 
                 -- RUN = vert
                 when "010" =>
@@ -133,7 +128,6 @@ begin
 
                     end if;
 
-
                 -- PAUSE = rouge
                 when "100" =>
 
@@ -151,7 +145,6 @@ begin
                         B <= "1111";
 
                     end if;
-
 
                 when others =>
 
